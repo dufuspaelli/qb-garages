@@ -243,7 +243,8 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                     OutsideVehicles[vehicle.plate] = veh
                     TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
                 end
-    
+                print("carspawnthingtrigered")
+
                 QBCore.Functions.SetVehicleProperties(veh, properties)
                 SetVehicleNumberPlateText(veh, vehicle.plate)
                 SetEntityHeading(veh, heading)
@@ -255,6 +256,7 @@ RegisterNetEvent('qb-garages:client:takeOutGarage', function(data)
                 TaskWarpPedIntoVehicle(PlayerPedId(), veh, -1)
                 TriggerEvent("vehiclekeys:client:SetOwner", QBCore.Functions.GetPlate(veh))
                 SetVehicleEngineOn(veh, true, true)
+                TriggerEvent('persistent-vehicles/register-vehicle', veh)
             end, vehicle.plate)
     
         end, location, true)
@@ -289,6 +291,8 @@ local function enterVehicle(veh, indexgarage, type, garage)
     local plate = QBCore.Functions.GetPlate(veh)
     QBCore.Functions.TriggerCallback('qb-garage:server:checkOwnership', function(owned)
         if owned then
+            TriggerEvent('persistent-vehicles/forget-vehicle', veh)
+            Wait(1000)
             local bodyDamage = math.ceil(GetVehicleBodyHealth(veh))
             local engineDamage = math.ceil(GetVehicleEngineHealth(veh))
             local totalFuel = exports['LegacyFuel']:GetFuel(veh)
@@ -299,6 +303,7 @@ local function enterVehicle(veh, indexgarage, type, garage)
                 OutsideVehicles[plate] = nil
                 TriggerServerEvent('qb-garages:server:UpdateOutsideVehicles', OutsideVehicles)
             end
+           
             QBCore.Functions.Notify(Lang:t("success.vehicle_parked"), "primary", 4500)
         else
             QBCore.Functions.Notify(Lang:t("error.not_owned"), "error", 3500)

@@ -279,7 +279,7 @@ Garages = {
         type = 'depot',                --public, job, gang, depot
         vehicle = 'air'                 --car, air, sea
     },
-    ["lsymc"] = {
+--[[     ["lsymc"] = {
         label = "LSYMC Boathouse",               
         takeVehicle = vector3(-794.66, -1510.83, 1.59),
         spawnPoint = vector4(-793.58, -1501.4, 0.12, 111.5),
@@ -322,6 +322,6 @@ Garages = {
         blipNumber = 356,
         type = 'depot',                --public, job, gang, depot
         vehicle = 'sea'                 --car, air, sea
-    },
+    }, ]]
 }
 HouseGarages = {}
